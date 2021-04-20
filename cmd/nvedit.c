@@ -864,6 +864,7 @@ sep_err:
  *		for line endings. Only effective in addition to -t.
  *	-b:	assume binary format ('\0' separated, "\0\0" terminated)
  *	-c:	assume checksum protected environment format
+ *	-v:	validate if there's any space character in values.
  *	addr:	memory address to read from
  *	size:	length of input data; if missing, proper '\0'
  *		termination is mandatory
@@ -884,6 +885,7 @@ static int do_env_import(struct cmd_tbl *cmdtp, int flag,
 	int	del = 0;
 	int	crlf_is_lf = 0;
 	int	wl = 0;
+	int	validate = 0;
 	size_t	size;
 
 	cmd = *argv;
@@ -913,6 +915,9 @@ static int do_env_import(struct cmd_tbl *cmdtp, int flag,
 				break;
 			case 'd':
 				del = 1;
+				break;
+			case 'v':		/* validate variables */
+				validate = 1;
 				break;
 			default:
 				return CMD_RET_USAGE;
@@ -979,7 +984,7 @@ static int do_env_import(struct cmd_tbl *cmdtp, int flag,
 	}
 
 	if (!himport_r(&env_htab, ptr, size, sep, del ? 0 : H_NOCLEAR,
-		       crlf_is_lf, wl ? argc - 2 : 0, wl ? &argv[2] : NULL, 0)) {
+		       crlf_is_lf, wl ? argc - 2 : 0, wl ? &argv[2] : NULL, validate)) {
 		pr_err("## Error: Environment import failed: errno = %d\n",
 		       errno);
 		return 1;
