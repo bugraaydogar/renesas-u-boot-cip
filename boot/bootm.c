@@ -36,6 +36,7 @@
 #define MAX_CMDLINE_SIZE	SZ_4K
 
 #define IH_INITRD_ARCH IH_ARCH_DEFAULT
+#define COMMANDLINE_LENGTH			2048
 
 #ifndef USE_HOSTCC
 
@@ -901,6 +902,9 @@ static const void *boot_get_kernel(struct cmd_tbl *cmdtp, int flag, int argc,
 	const char	*fit_uname_kernel = NULL;
 #if CONFIG_IS_ENABLED(FIT)
 	int		os_noffset;
+#ifdef CONFIG_ANDROID_BOOT_IMAGE
+	ulong		afit_addr;
+#endif
 #endif
 
 #ifdef CONFIG_ANDROID_BOOT_IMAGE
@@ -982,6 +986,29 @@ static const void *boot_get_kernel(struct cmd_tbl *cmdtp, int flag, int argc,
 #endif
 #ifdef CONFIG_ANDROID_BOOT_IMAGE
 	case IMAGE_FORMAT_ANDROID:
+#if CONFIG_IS_ENABLED(FIT)
+		afit_addr = android_image_get_kernel_addr(buf);
+		if (IMAGE_FORMAT_FIT == genimg_get_format((const void *)afit_addr)) {
+			printf("## Detected FIT image wrapped in android boot image\n");
+			static char boot_addr_start[20];
+			snprintf(boot_addr_start, sizeof(boot_addr_start) - 1,
+				"0x%p", (void *)afit_addr);
+			static char *const boot_args[] = {boot_addr_start, NULL};
+			// check if there is cmdline field to process
+			const char *cmdline = android_image_get_cmdline(buf);
+			if (NULL != cmdline && strlen(cmdline)) {
+				char commandline[COMMANDLINE_LENGTH] = {0};
+				char *bootargs = env_get("bootargs");
+				if (bootargs) {
+					sprintf(commandline, "%s %s", bootargs, cmdline);
+				} else {
+					sprintf(commandline, "%s ", cmdline);
+				}
+				env_set("bootargs", commandline);
+			}
+			return boot_get_kernel(cmdtp, flag, 1, boot_args, images, os_data, os_len);
+		}
+#endif // CONFIG_IS_ENABLED(FIT)
 		boot_img = buf;
 		vendor_boot_img = NULL;
 		if (IS_ENABLED(CONFIG_CMD_ABOOTIMG)) {
