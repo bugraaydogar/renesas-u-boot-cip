@@ -15,7 +15,7 @@
 #define FASTBOOT_VERSION	"0.4"
 
 /* The 64 defined bytes plus \0 */
-#define FASTBOOT_COMMAND_LEN	(64 + 1)
+#define FASTBOOT_COMMAND_LEN	(512 + 1)
 #define FASTBOOT_RESPONSE_LEN	(64 + 1)
 
 /**
