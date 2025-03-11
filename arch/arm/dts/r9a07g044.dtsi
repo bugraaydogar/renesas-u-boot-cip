@@ -1084,12 +1084,13 @@
 			compatible = "renesas,r9a07g044-wdt",
 				     "renesas,rzg2l-wdt";
 			reg = <0 0x12800800 0 0x400>;
-			clocks = <&extal_clk 0>;
+			clocks = <&cpg CPG_MOD R9A07G044_WDT0_PCLK>,
+				 <&cpg CPG_MOD R9A07G044_WDT0_CLK>;
 			clock-names = "pclk", "oscclk";
-			interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_HIGH>,
-				     <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+			interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "wdt", "perrout";
-			resets = <&cpg R9A07G044_WDT1_PRESETN>;
+			resets = <&cpg R9A07G044_WDT0_PRESETN>;
 			power-domains = <&cpg>;
 			status = "disabled";
 		};

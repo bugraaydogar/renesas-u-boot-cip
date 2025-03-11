@@ -48,9 +48,11 @@ static bool second_init;
 bool watchdog_overflow;
 
 struct rzg2l_wdt_priv {
-	struct clk clk;
+	struct clk osc_clk;
+	struct clk pclk;
 	void __iomem *base;
 	unsigned long osc_clk_rate;
+	unsigned long pclk_rate;
 	unsigned int timeout;
 	bool is_active;
 	unsigned long delay;
@@ -268,13 +270,10 @@ static int rzg2l_wdt_probe(struct udevice *watchdog_dev)
 		printf("failed to get wdt addr\n");
 		return -EINVAL;
 	}
-	/* Get watchdog main clock */
-	ret = clk_get_by_index(watchdog_dev, 0, &priv->clk);
-	if (ret) {
-		printf("failed to get by index oscclk\n");
-		return -EINVAL;
-	}
-	priv->osc_clk_rate = clk_get_rate(&priv->clk);
+	/* Get watchdog main clock 
+	WDT0_CLK defined in extal_clk but not in R9A07G044_WDT0_CLK
+	Hardcode to set the osc clock rate */
+	priv->osc_clk_rate = 24000000;
 
 	/* Get Peripheral clock
 	 * Because pclk is not defined in the CPG clock
