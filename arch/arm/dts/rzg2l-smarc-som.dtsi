@@ -320,3 +320,8 @@
 	status = "okay";
 	timeout-sec = <60>;
 };
+
+&wdt1 {
+	status = "okay";
+	timeout-sec = <60>;
+};
