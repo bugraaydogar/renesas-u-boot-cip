@@ -144,7 +144,7 @@
     UBUNTU_ENV_LOAD_FIT_BOOT_FILES \
     EFI_ENV_DEFAULT \
     "devtype=mmc\0" \
-    "mmcdev=0\0" \
+    "mmcdev=1\0" \
     "mmc_seed_part=1\0" \
     "mmc_boot_part=2\0" \
     "dfu_alt_info=sf 0:0=fip-smarc-rzg2l_pmic.bin raw 0x20000 0x1F0000\0" \
