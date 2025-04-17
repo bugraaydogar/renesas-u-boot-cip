@@ -132,6 +132,22 @@
             "run ${target}; " \
         "done;\0"
 
+/* Detection Logic */
+#define BOOT_DETECT_ENV \
+    "detect_boot=" \
+        "setenv devtype mmc; setenv devnum 1; setenv distro_bootpart 1; " \
+        "echo Checking ${devtype} ${devnum}:${distro_bootpart} for FIT structure; " \
+        "if load ${devtype} ${devnum}:${distro_bootpart} ${fitloadaddr} uboot/ubuntu/boot.sel; then " \
+            "echo FIT structure detected (uboot/ubuntu/boot.sel found); " \
+            "setenv bootmode fit; " \
+            "run boot_uc; " \
+        "else " \
+            "echo No FIT structure found on mmc 1:1, trying EFI; " \
+            "setenv bootmode efi; " \
+            "run boot_efi; " \
+        "fi;\0"
+
+
 /* Combined Environment */
 #define CONFIG_EXTRA_ENV_SETTINGS \
     "console=ttySC0\0" \
@@ -143,6 +159,7 @@
     UBUNTU_ENV_DEFAULT \
     UBUNTU_ENV_LOAD_FIT_BOOT_FILES \
     EFI_ENV_DEFAULT \
+    BOOT_DETECT_ENV \
     "devtype=mmc\0" \
     "mmcdev=1\0" \
     "mmc_seed_part=1\0" \
@@ -152,10 +169,16 @@
     "ipaddr=192.168.10.7\0" \
     "serverip=192.168.10.1\0" \
     "boot_uc=run load_uc;bootm ${fitloadaddr}#${fdtfile}\0" \
-    "bootmode=fit\0" /* Default to FIT */ \
-    "bootcmd=if test ${bootmode} = efi; then run boot_efi; else run boot_uc; fi\0"
+    "bootmode=auto\0" /* Default to auto-detection */ \
+    "bootcmd=" \
+        "if test ${bootmode} = fit; then " \
+            "run boot_uc; " \
+        "elif test ${bootmode} = efi; then " \
+            "run boot_efi; " \
+        "else " \
+            "run detect_boot; " \
+        "fi;\0"
 
-/* For board */
 /* Ethernet RAVB */
 #define CONFIG_BITBANGMII_MULTI
 
