@@ -142,14 +142,14 @@
 /* Detection Logic */
 #define BOOT_DETECT_ENV \
     "detect_boot=" \
-        "setenv devtype mmc; setenv devnum 1; setenv distro_bootpart 1; " \
+        "setenv devtype mmc; setenv devnum 1; setenv distro_bootpart 2; " \
         "echo Checking ${devtype} ${devnum}:${distro_bootpart} for FIT structure; " \
         "if load ${devtype} ${devnum}:${distro_bootpart} ${fitloadaddr} uboot/ubuntu/boot.sel; then " \
             "echo FIT structure detected (uboot/ubuntu/boot.sel found); " \
             "setenv bootmode fit; " \
             "run boot_uc; " \
         "else " \
-            "echo No FIT structure found on mmc 1:1, trying EFI; " \
+            "echo No FIT structure found on mmc ${devnum}:${distro_bootpart}, trying EFI; " \
             "setenv bootmode efi; " \
             "run boot_efi; " \
         "fi;\0"
