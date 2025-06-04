@@ -101,6 +101,7 @@
 /* EFI Environment (from EFI header) */
 #define EFI_ENV_DEFAULT \
     "boot_efi_binary=efi/boot/bootaa64.efi\0" \
+    "setenv platform_part 1;" \
     "scan_for_usb_dev=" \
         "usb start; " \
         "if test ! -e usb ${devnum}:1 /; then usb reset; fi;\0" \
@@ -111,8 +112,11 @@
             "if test -e ${devtype} ${devnum}:${distro_bootpart} ${boot_efi_binary}; then " \
                 "load ${devtype} ${devnum}:${distro_bootpart} " \
                 "${kernel_addr_r} ${boot_efi_binary};" \
-                "echo BootEFI from <${devtype}> [${devnum}:${distro_bootpart}]; " \
-                "bootefi ${kernel_addr_r};" \
+                "load ${devtype} ${devnum}:${platform_part} " \
+                "${fdt_addr_r} ${fdtfile};" \
+                "echo BootEFI from <${devtype}> [${devnum}:${distro_bootpart}] " \
+             		"dtb from <${devtype}> [${devnum}:${platform_part}] ${fdtfile};" \
+                "bootefi ${kernel_addr_r} ${fdt_addr_r};" \
             "fi;" \
         "done;\0" \
     "mmc0_efi=" \
