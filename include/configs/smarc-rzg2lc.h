@@ -62,7 +62,7 @@
       "load ${devtype} ${mmcdev}:${kernel_bootpart} ${fitloadaddr} ${core_state};" \
       "env import -v ${fitloadaddr} ${filesize} ${recovery_vars};" \
       "if test \"${snapd_recovery_mode}\" = \"run\"; then " \
-        "setenv bootargs \"console=${console} snapd_recovery_mode=${snapd_recovery_mode} ${snapd_standard_params}\";" \
+        "setenv bootargs \"console=${console} snapd_recovery_mode=${snapd_recovery_mode} ${snapd_standard_params} rw rootwait earlycon\";" \
         "setenv kernel_bootpart ${mmc_boot_part};" \
         "load ${devtype} ${mmcdev}:${kernel_bootpart} ${fitloadaddr} ${core_state};" \
         "env import -v ${fitloadaddr} ${filesize} ${kernel_vars};" \
@@ -81,9 +81,11 @@
         "fi;" \
         "setenv kernel_prefix \"/uboot/ubuntu/${kernel_name}/\";" \
       "else " \
-        "setenv bootargs \"console=${console} snapd_recovery_mode=${snapd_recovery_mode} snapd_recovery_system=${snapd_recovery_system} ${snapd_standard_params}\";" \
+        "setenv bootargs \"console=${console} snapd_recovery_mode=${snapd_recovery_mode} snapd_recovery_system=${snapd_recovery_system} ${snapd_standard_params} rw rootwait earlycon\";" \
         "setenv kernel_prefix \"/systems/${snapd_recovery_system}/kernel/\";" \
       "fi;" \
+      "setenv platform_part 1;"                                           \
+      "load ${devtype} ${mmcdev}:${platform_part} ${fdt_addr_r} r9a07g044l2-smarc.dtb;" \
       "run loadfiles\0"
 
 #define UBUNTU_ENV_LOAD_FIT_BOOT_FILES \
@@ -166,20 +168,20 @@
     "fdt_addr_r=0x48000000\0" \
     "fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \
     "kernel_addr_r=0x48080000\0" \
-    "fitloadaddr=0x50000000\0" \
+    "fitloadaddr=0x61000000\0"   \
     UBUNTU_ENV_DEFAULT \
     UBUNTU_ENV_LOAD_FIT_BOOT_FILES \
     EFI_ENV_DEFAULT \
     BOOT_DETECT_ENV \
     "devtype=mmc\0" \
     "mmcdev=1\0" \
-    "mmc_seed_part=1\0" \
-    "mmc_boot_part=2\0" \
+    "mmc_seed_part=2\0" \
+    "mmc_boot_part=3\0" \
     "dfu_alt_info=sf 0:0=fip-smarc-rzg2l_pmic.bin raw 0x20000 0x1F0000\0" \
     "dfu_bufsiz=0x1F0000\0" \
     "ipaddr=192.168.10.7\0" \
     "serverip=192.168.10.1\0" \
-    "boot_uc=run load_uc;bootm ${fitloadaddr}#${fdtfile}\0" \
+    "boot_uc=run load_uc;bootm 0x61000000#r9a07g044c2-smarc.dtb 0x61000000#r9a07g044c2-smarc.dtb ${fdt_addr_r}\0" \
     "bootmode=auto\0" /* Default to auto-detection */ \
     "bootcmd=" \
         "if test ${bootmode} = fit; then " \
