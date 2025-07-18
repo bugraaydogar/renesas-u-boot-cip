@@ -60,12 +60,12 @@
     "load_uc=" \
       "setenv kernel_bootpart ${mmc_seed_part};" \
       "load ${devtype} ${mmcdev}:${kernel_bootpart} ${fitloadaddr} ${core_state};" \
-      "env import -v -c ${fitloadaddr} ${filesize} ${recovery_vars};" \
+      "env import -v ${fitloadaddr} ${filesize} ${recovery_vars};" \
       "if test \"${snapd_recovery_mode}\" = \"run\"; then " \
         "setenv bootargs \"console=${console} snapd_recovery_mode=${snapd_recovery_mode} ${snapd_standard_params}\";" \
         "setenv kernel_bootpart ${mmc_boot_part};" \
         "load ${devtype} ${mmcdev}:${kernel_bootpart} ${fitloadaddr} ${core_state};" \
-        "env import -v -c ${fitloadaddr} ${filesize} ${kernel_vars};" \
+        "env import -v ${fitloadaddr} ${filesize} ${kernel_vars};" \
         "setenv kernel_name ${snap_kernel};" \
         "if test -n \"${kernel_status}\"; then " \
           "if test \"${kernel_status}\" = \"try\"; then " \
