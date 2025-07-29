@@ -45,6 +45,11 @@ config TARGET_TH1520_LPI4A
 
 config TARGET_XILINX_MBV
 	bool "Support AMD/Xilinx MicroBlaze V"
+config TARGET_RZF_DEV
+	bool "Support Renesas RZ/Five"
+
+config TARGET_SMARC_RZF
+        bool "Support Renesas RZ/Five"
 
 endchoice
 
@@ -91,10 +96,14 @@ source "board/sophgo/milkv_duo/Kconfig"
 source "board/starfive/visionfive2/Kconfig"
 source "board/thead/th1520_lpi4a/Kconfig"
 source "board/xilinx/mbv/Kconfig"
+source "board/renesas/rzf-dev/Kconfig"
 
 # platform-specific options below
 source "arch/riscv/cpu/andes/Kconfig"
 source "arch/riscv/cpu/cv1800b/Kconfig"
+source "arch/riscv/cpu/ax25/Kconfig"
+source "arch/riscv/cpu/rzfive/Kconfig"
+source "arch/riscv/cpu/rzfive/rzmpu/Kconfig"
 source "arch/riscv/cpu/fu540/Kconfig"
 source "arch/riscv/cpu/fu740/Kconfig"
 source "arch/riscv/cpu/generic/Kconfig"

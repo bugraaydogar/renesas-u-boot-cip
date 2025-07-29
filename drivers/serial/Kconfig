@@ -901,7 +901,7 @@ config SANDBOX_SERIAL
 
 config SCIF_CONSOLE
 	bool "Renesas SCIF UART support"
-	depends on SH || ARCH_RENESAS
+	depends on SH || ARCH_RENESAS || RZF_DEV
 	help
 	  Select this to enable Renesas SCIF UART. To operate serial ports
 	  on systems with RCar or SH SoCs, say Y to this option. If unsure,
@@ -1162,5 +1162,9 @@ config SYS_SDMR
 	hex "SDMR Value"
 	depends on MPC8XX_CONS
 	default 0x0
+
+config RZV2M_SERIAL
+       bool "Renesas RZ/V2M UART support"
+       depends on TARGET_RZV2M || TARGET_RZV2MA
 
 endif

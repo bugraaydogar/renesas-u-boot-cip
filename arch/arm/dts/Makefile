@@ -954,6 +954,23 @@ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
 	imxrt1020-evk.dtb \
 	imxrt1170-evk.dtb \
 
+dtb-$(CONFIG_RCAR_GEN3) += \
+	r8a774c0-ek874-revc-u-boot.dtb \
+	rzg2l-dev.dtb \
+	smarc-rzg2l.dtb \
+	rzv2l-dev.dtb \
+	smarc-rzv2l.dtb \
+	rzg2lc-dev.dtb \
+	smarc-rzg2lc.dtb \
+	rzg2ul-type1-dev.dtb \
+	rzg2ul-type1-ddr3l-dev.dtb \
+	rzg2ul-type2-dev.dtb \
+	smarc-rzg2ul.dtb \
+	rzv2h-dev.dtb \
+	rzv2h-evk-alpha.dtb \
+	rzg3e-dev.dtb \
+	smarc-rzg3e.dtb
+
 dtb-$(CONFIG_RCAR_GEN4) += \
 	r8a779h0-gray-hawk.dtb
 
@@ -966,6 +983,10 @@ endif
 
 dtb-$(CONFIG_RZA1) += \
 	r7s72100-gr-peach.dtb
+
+dtb-$(CONFIG_RZ_V2M) += \
+	r9a09g011gbg-rzv2m-u-boot.dtb \
+	r9a09g055ma3gbg-rzv2ma-u-boot.dtb
 
 dtb-$(CONFIG_ARCH_KEYSTONE) += keystone-k2hk-evm.dtb \
 	keystone-k2l-evm.dtb \
