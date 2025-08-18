@@ -85,7 +85,7 @@
         "setenv kernel_prefix \"/systems/${snapd_recovery_system}/kernel/\";" \
       "fi;" \
       "setenv platform_part 1;"                                           \
-      "load ${devtype} ${mmcdev}:${platform_part} ${fdt_addr_r} r9a07g044l2-smarc.dtb;" \
+      "load ${devtype} ${mmcdev}:${platform_part} ${fdt_addr_r} ${fdtfile};" \
       "run loadfiles\0"
 
 #define UBUNTU_ENV_LOAD_FIT_BOOT_FILES \
@@ -181,7 +181,7 @@
     "dfu_bufsiz=0x1F0000\0" \
     "ipaddr=192.168.10.7\0" \
     "serverip=192.168.10.1\0" \
-    "boot_uc=run load_uc;bootm 0x61000000#r9a07g044c2-smarc.dtb 0x61000000#r9a07g044c2-smarc.dtb ${fdt_addr_r}\0" \
+    "boot_uc=run load_uc;bootm 0x61000000#${fdtfile} 0x61000000#${fdtfile} ${fdt_addr_r}\0" \
     "bootmode=auto\0" /* Default to auto-detection */ \
     "bootcmd=" \
         "if test ${bootmode} = fit; then " \
