@@ -124,9 +124,16 @@ static int rzg2l_pinctrl_set_state(struct udevice *dev, struct udevice *config)
 
 	for (i = 0 ; i < count; i++) {
 		cells[i] = fdt32_to_cpu(data[i]);
+#if defined(CONFIG_RZG2L_DISTRO_BOOT)
+		func = (cells[i] >> 16) & 0xf;
+		port = (cells[i] & 0xffff) / RZG2L_MAX_PINS_PER_PORT;
+		pin  = (cells[i] & 0xffff) % RZG2L_MAX_PINS_PER_PORT;
+#else
 		func = (cells[i] >> 12) & 0xf;
 		port = (cells[i] / RZG2L_MAX_PINS_PER_PORT) & 0x1ff;
 		pin = cells[i] % RZG2L_MAX_PINS_PER_PORT;
+#endif
+
 		if (func > nmax_func || func < nmin_func || port >= port_max ||
 				pin >= RZG2L_MAX_PINS_PER_PORT) {
 			printf("Invalid cell %i in node %s!\n",
@@ -180,6 +187,7 @@ static int rzg2l_pinctrl_probe(struct udevice *dev)
 
 static const struct udevice_id rzg2l_pinctrl_match[] = {
 	{ .compatible = "renesas,r9a07g044l-pinctrl", .data = 49 },
+	{ .compatible = "renesas,r9a07g044-pinctrl", .data = 49 },
 	{ .compatible = "renesas,r9a07g044c-pinctrl", .data = 49 },
 	{ .compatible = "renesas,r9a07g054l-pinctrl", .data = 49 },
 	{ .compatible = "renesas,r9a07g043u-pinctrl", .data = 19 },
