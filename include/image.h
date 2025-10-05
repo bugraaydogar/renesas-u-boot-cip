@@ -1812,6 +1812,10 @@ int fit_image_cipher_get_algo(const void *fit, int noffset, char **algo);
 struct cipher_algo *image_get_cipher_algo(const char *full_name);
 struct andr_image_data;
 
+const char *android_image_get_cmdline(const struct andr_image_data *img_data);
+
+ulong android_image_get_kernel_addr(struct andr_image_data *img_data);
+
 /**
  * android_image_get_data() - Parse Android boot images
  *
