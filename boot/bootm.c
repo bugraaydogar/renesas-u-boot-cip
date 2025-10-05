@@ -217,6 +217,25 @@ static int boot_get_kernel(const char *addr_fit, struct bootm_headers *images,
 		afit_addr = android_image_get_kernel_addr(buf);
 		if (IMAGE_FORMAT_FIT == genimg_get_format((const void *)afit_addr)) {
 			printf("## Detected FIT image wrapped in android boot image\n");
+
+			// append to the boot address fdt file name if it's defined
+			static char boot_addr_start[128];
+			char *fdt_file = env_get("fdt_file");
+			if (fdt_file) {
+				// in case fdt_file is wrapped in double quotes, ignore those
+				if (*fdt_file == '"') {
+					++fdt_file; // removing leading "
+					snprintf(boot_addr_start, sizeof(boot_addr_start) - 1,
+						"0x%p#%s", (void *)afit_addr, fdt_file);
+					boot_addr_start[strlen(boot_addr_start)-1]=NULL; // removing closing "
+				} else {
+					snprintf(boot_addr_start, sizeof(boot_addr_start) - 1,
+						"0x%p#%s", (void *)afit_addr, fdt_file);
+				}
+			} else {
+				snprintf(boot_addr_start, sizeof(boot_addr_start) - 1,
+					"0x%p", (void *)afit_addr);
+			}
 			static char boot_addr_start[20];
 			snprintf(boot_addr_start, sizeof(boot_addr_start) - 1,
 				"0x%p", (void *)afit_addr);
