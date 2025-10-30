@@ -78,7 +78,7 @@
         "setenv kernel_prefix \"/systems/${snapd_recovery_system}/kernel/\";" \
       "fi;" \
       "setenv platform_part 1;"                                           \
-      "load ${devtype} ${mmcdev}:${platform_part} ${fdt_addr_r} r9a07g044l2-smarc.dtb;" \
+      "load ${devtype} ${mmcdev}:${platform_part} ${fdt_addr_r} ${fdtfile};" \
       "run loadfiles\0"
 
 #define UBUNTU_ENV_LOAD_FIT_BOOT_FILES \
