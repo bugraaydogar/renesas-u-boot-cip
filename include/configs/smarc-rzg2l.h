@@ -148,7 +148,7 @@
         "fi;\0"
 
 /* Combined Environment */
-#define CONFIG_EXTRA_ENV_SETTINGS \
+#define CFG_EXTRA_ENV_SETTINGS \
     "console=ttySC0\0" \
     "usb_pgood_delay=2000\0" \
     "fdt_addr_r=0x48000000\0" \
