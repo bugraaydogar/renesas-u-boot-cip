@@ -66,6 +66,9 @@
         "setenv kernel_bootpart ${mmc_boot_part};" \
         "load ${devtype} ${mmcdev}:${kernel_bootpart} ${fitloadaddr} ${core_state};" \
         "env import -v ${fitloadaddr} ${filesize} ${kernel_vars};" \
+        "if test -n \"${snap_kernel}\"; then " \
+             "env import -c -v ${fitloadaddr} ${filesize} ${kernel_vars};" \
+        "fi;" \
         "setenv kernel_name ${snap_kernel};" \
         "if test -n \"${kernel_status}\"; then " \
           "if test \"${kernel_status}\" = \"try\"; then " \
@@ -152,7 +155,7 @@
         "echo Checking ${devtype} ${devnum}:${distro_bootpart} for FIT structure; " \
         "if load ${devtype} ${devnum}:${distro_bootpart} ${fitloadaddr} uboot/ubuntu/boot.sel; then " \
             "echo FIT structure detected (uboot/ubuntu/boot.sel found); " \
-            "run boot_uc; " \
+            "run boot_uc; sleep 3; reset; " \
         "else " \
             "echo No FIT structure found on mmc ${devnum}:${distro_bootpart}, trying EFI; " \
             "run boot_efi; " \
