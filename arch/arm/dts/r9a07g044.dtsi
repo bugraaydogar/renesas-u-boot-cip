@@ -13,6 +13,15 @@
 	#address-cells = <2>;
 	#size-cells = <2>;
 
+	signature {
+		fit-key {
+			required ="conf";
+			algo ="sha256,rsa2048";
+			key-name-hint ="fit";
+#include "u-boot-pubkey.dtsi"
+		};
+	};
+
 	audio_clk1: audio1-clk {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
