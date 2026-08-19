@@ -30,10 +30,15 @@ CONFIG_DEFAULT_DEVICE_TREE="rzt2h-dev"
 CONFIG_SMBIOS_PRODUCT_NAME=""
 CONFIG_SPL=n
 CONFIG_FIT=y
-CONFIG_USE_BOOTARGS=y
-CONFIG_BOOTARGS="rw rootwait earlycon root=/dev/mmcblk0p1"
+# Max size of the (decompressed) OS image bootm will place. The arm64 default
+# is 0x4000000 (64 MiB), but the Ubuntu Core kernel Image is ~67.5 MiB, which
+# overflows it and makes bootm fail with "uncompress error -28" (-ENOSPC).
+# Raise to 128 MiB for headroom.
+CONFIG_SYS_BOOTM_LEN=0x8000000
+# CONFIG_USE_BOOTARGS=y
+# CONFIG_BOOTARGS="rw rootwait earlycon root=/dev/mmcblk0p1"
 CONFIG_SUPPORT_RAW_INITRD=y
-CONFIG_DEFAULT_FDT_FILE="rzt2h-dev.dtb"
+CONFIG_DEFAULT_FDT_FILE="r9a09g077m44-rzt2h-evk.dtb"
 CONFIG_VERSION_VARIABLE=y
 CONFIG_HUSH_PARSER=y
 CONFIG_CMD_BOOTZ=y
