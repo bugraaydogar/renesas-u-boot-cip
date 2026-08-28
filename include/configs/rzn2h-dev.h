@@ -151,7 +151,7 @@
 /* ENV setting */
 #define CFG_EXTRA_ENV_SETTINGS	\
 	"fdt_addr_r=0xC5F00000\0" \
-	"fitloadaddr=0xE0000000\0" \
+	"fitloadaddr=0xE8000000\0" \
 	"fdtfile="CONFIG_DEFAULT_FDT_FILE"\0" \
 	"kernel_addr_r=0xc4200000\0" \
 	"usb_pgood_delay=2000\0" \
